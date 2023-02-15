@@ -15,6 +15,7 @@ const hostname = 'localhost';
 const endpoint = '/todos';
 
 // Data
+let idForNewTodo = 1;
 const data = fs.readFileSync(__dirname + '/todos/index.json');
 
 // Certifications
@@ -33,11 +34,24 @@ app.use(cors({
 
 // CRUD methods
 app.get(endpoint, (req, res) => {
-  res.send(data);
+  res.send({ data: data.todos });
 });
 app.post(endpoint, (req, res) => {
-  // TODO: Implement POST(CREATE) method
-  res.send(data);
+  if (!req.body || !req.body.title) {
+    res.setHeader(406);
+    res.send();
+    return;
+  }
+
+  const newTodo = {
+    id: idForNewTodo,
+    when: new Date(),
+    title: req.body.title,
+  };
+
+  data.todos.push(newTodo);
+
+  res.send(newTodo);
 });
 app.patch(endpoint, (req, res) => {
   // TODO: Implement PATCH(UPDATE) method
