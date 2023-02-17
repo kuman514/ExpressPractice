@@ -75,8 +75,20 @@ app.patch(endpoint, (req, res) => {
   res.send(data.todos[patchId]);
 });
 app.delete(endpoint, (req, res) => {
-  // TODO: Implement DELETE method
-  res.send(data);
+  if (!req.body) {
+    res.setHeader(406);
+    res.send();
+    return;
+  }
+
+  const deleteIndex = data.todos.findIndex((todo) => req.body.id === todo.id);
+  if (deleteIndex === -1) {
+    res.setHeader(404);
+    res.send();
+    return;
+  }
+
+  res.send(data.todos.splice(deleteIndex, 1)[0]);
 });
 
 // Start listening
