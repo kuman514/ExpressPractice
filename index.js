@@ -60,19 +60,19 @@ app.patch(endpoint, (req, res) => {
     return;
   }
 
-  const patchId = data.todos.findIndex((todo) => req.body.id === todo.id);
-  if (patchId === -1) {
+  const patchIndex = data.todos.findIndex((todo) => req.body.id === todo.id);
+  if (patchIndex === -1) {
     res.setHeader(404);
     res.send();
     return;
   }
 
-  data.todos[patchId] = {
-    ...data.todos[patchId],
+  data.todos[patchIndex] = {
+    ...data.todos[patchIndex],
     title: req.body.title,
   };
 
-  res.send(data.todos[patchId]);
+  res.send(data.todos[patchIndex]);
 });
 app.delete(endpoint, (req, res) => {
   if (!req.body) {
