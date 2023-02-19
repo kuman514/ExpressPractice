@@ -16,7 +16,7 @@ const endpoint = '/todos';
 
 // Data
 let idForNewTodo = 1;
-const data = fs.readFileSync(__dirname + '/todos/index.json');
+const data = JSON.parse(fs.readFileSync(__dirname + '/todos/index.json', 'utf8'));
 
 // Certifications
 const options = {
@@ -34,10 +34,13 @@ app.use(cors({
 
 // CRUD methods
 app.get(endpoint, (req, res) => {
+  console.log(`[${new Date()}]: Reading todo data`);
   res.send({ data: data.todos });
 });
 app.post(endpoint, (req, res) => {
-  if (!req.body || !req.body.title) {
+  console.log(`[${new Date()}]: Posting a todo`);
+  if (!req.body || !req.body.title || req.body.title === '') {
+    console.error(`[${new Date()}]: Can't post a todo due to no title`);
     res.setHeader(406);
     res.send();
     return;
@@ -54,7 +57,9 @@ app.post(endpoint, (req, res) => {
   res.send(newTodo);
 });
 app.patch(endpoint, (req, res) => {
-  if (!req.body || !req.body.title) {
+  console.log(`[${new Date()}]: Patching a todo`);
+  if (!req.body || !req.body.title || req.body.title === '') {
+    console.error(`[${new Date()}]: Can't patch a todo due to no title`);
     res.setHeader(406);
     res.send();
     return;
@@ -62,6 +67,7 @@ app.patch(endpoint, (req, res) => {
 
   const patchIndex = data.todos.findIndex((todo) => req.body.id === todo.id);
   if (patchIndex === -1) {
+    console.error(`[${new Date()}]: Can't find todo id ${req.body.id}`);
     res.setHeader(404);
     res.send();
     return;
@@ -75,7 +81,9 @@ app.patch(endpoint, (req, res) => {
   res.send(data.todos[patchIndex]);
 });
 app.delete(endpoint, (req, res) => {
+  console.log(`[${new Date()}]: Deleting a todo`);
   if (!req.body) {
+    console.error(`[${new Date()}]: Can't delete a todo due to no title`);
     res.setHeader(406);
     res.send();
     return;
@@ -83,6 +91,7 @@ app.delete(endpoint, (req, res) => {
 
   const deleteIndex = data.todos.findIndex((todo) => req.body.id === todo.id);
   if (deleteIndex === -1) {
+    console.error(`[${new Date()}]: Can't find todo id ${req.body.id}`);
     res.setHeader(404);
     res.send();
     return;
@@ -92,5 +101,7 @@ app.delete(endpoint, (req, res) => {
 });
 
 // Start listening
+console.log('init data', data);
+console.log('Starting a server');
 http.createServer(app).listen(port, hostname);
 https.createServer(options, app).listen(httpsPort, hostname);
