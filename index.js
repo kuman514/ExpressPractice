@@ -54,7 +54,7 @@ app.post(endpoint, (req, res) => {
 
   data.todos.push(newTodo);
 
-  res.send(newTodo);
+  res.send({ data: newTodo });
 });
 app.patch(endpoint, (req, res) => {
   console.log(`[${new Date()}]: Patching a todo`);
@@ -78,7 +78,7 @@ app.patch(endpoint, (req, res) => {
     title: req.body.title,
   };
 
-  res.send(data.todos[patchIndex]);
+  res.send({ data: data.todos[patchIndex] });
 });
 app.delete(endpoint, (req, res) => {
   console.log(`[${new Date()}]: Deleting a todo`);
@@ -97,7 +97,7 @@ app.delete(endpoint, (req, res) => {
     return;
   }
 
-  res.send(data.todos.splice(deleteIndex, 1)[0]);
+  res.send();
 });
 
 // Start listening
