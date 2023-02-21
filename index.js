@@ -53,6 +53,7 @@ app.post(endpoint, (req, res) => {
   };
 
   data.todos.push(newTodo);
+  idForNewTodo++;
 
   res.send({ data: newTodo });
 });
@@ -65,9 +66,10 @@ app.patch(endpoint, (req, res) => {
     return;
   }
 
-  const patchIndex = data.todos.findIndex((todo) => req.body.id === todo.id);
+  const patchId = parseInt(req.body.id);
+  const patchIndex = data.todos.findIndex((todo) => patchId === todo.id);
   if (patchIndex === -1) {
-    console.error(`[${new Date()}]: Can't find todo id ${req.body.id}`);
+    console.error(`[${new Date()}]: Can't find todo id ${patchId}`);
     res.setHeader(404);
     res.send();
     return;
@@ -89,14 +91,16 @@ app.delete(endpoint, (req, res) => {
     return;
   }
 
-  const deleteIndex = data.todos.findIndex((todo) => req.body.id === todo.id);
+  const deleteId = parseInt(req.body.id);
+  const deleteIndex = data.todos.findIndex((todo) => deleteId === todo.id);
   if (deleteIndex === -1) {
-    console.error(`[${new Date()}]: Can't find todo id ${req.body.id}`);
+    console.error(`[${new Date()}]: Can't find todo id ${deleteId}`);
     res.setHeader(404);
     res.send();
     return;
   }
 
+  data.todos.splice(deleteIndex, 1);
   res.send();
 });
 
