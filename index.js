@@ -41,8 +41,7 @@ app.post(endpoint, (req, res) => {
   console.log(`[${new Date()}]: Posting a todo`);
   if (!req.body || !req.body.title || req.body.title === '') {
     console.error(`[${new Date()}]: Can't post a todo due to no title`);
-    res.setHeader(406);
-    res.send();
+    res.status(406).send();
     return;
   }
 
@@ -61,8 +60,7 @@ app.patch(endpoint, (req, res) => {
   console.log(`[${new Date()}]: Patching a todo`);
   if (!req.body || !req.body.title || req.body.title === '') {
     console.error(`[${new Date()}]: Can't patch a todo due to no title`);
-    res.setHeader(406);
-    res.send();
+    res.status(406).send();
     return;
   }
 
@@ -70,8 +68,7 @@ app.patch(endpoint, (req, res) => {
   const patchIndex = data.todos.findIndex((todo) => patchId === todo.id);
   if (patchIndex === -1) {
     console.error(`[${new Date()}]: Can't find todo id ${patchId}`);
-    res.setHeader(404);
-    res.send();
+    res.status(404).send();
     return;
   }
 
@@ -86,8 +83,7 @@ app.delete(endpoint, (req, res) => {
   console.log(`[${new Date()}]: Deleting a todo`);
   if (!req.body) {
     console.error(`[${new Date()}]: Can't delete a todo due to no title`);
-    res.setHeader(406);
-    res.send();
+    res.status(406).send();
     return;
   }
 
@@ -95,8 +91,7 @@ app.delete(endpoint, (req, res) => {
   const deleteIndex = data.todos.findIndex((todo) => deleteId === todo.id);
   if (deleteIndex === -1) {
     console.error(`[${new Date()}]: Can't find todo id ${deleteId}`);
-    res.setHeader(404);
-    res.send();
+    res.status(404).send();
     return;
   }
 
