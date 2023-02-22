@@ -6,5 +6,6 @@
 
 # Start
 1. `ca.pem`, `cert.pem`, `key.pem`을 알아서 만들어서 `certifications` 디렉토리에 삽입
-2. `npm install express cors body-parser --save`
+2. `npm install`
 3. `node index.js`
+4. `ExpressPractice.postman_collection.json`을 Postman으로 import하여 Todo CRUD 실행. 또는, 이에 대응하는 프론트엔드 앱을 만들어도 됨.
